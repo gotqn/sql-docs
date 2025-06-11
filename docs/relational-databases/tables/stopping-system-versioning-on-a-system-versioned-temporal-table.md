@@ -77,7 +77,23 @@ WITH (PARTITIONS(1, 2));
 ALTER TABLE dbo.Department
 SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = History.DepartmentHistory));
 
-COMMIT;
+COMMIT TRANSACTION;
+```
+
+or 
+
+```sql
+BEGIN TRANSACTION;
+
+ALTER TABLE dbo.Department
+SET (SYSTEM_VERSIONING = OFF);
+
+EXEC ('DELETE FROM [History].[DepartmentHistory] WHERE [DepartmentID] = 1001;')
+
+ALTER TABLE dbo.Department
+SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = History.DepartmentHistory));
+
+COMMIT TRANSACTION;
 ```
 
 ## Related content
